@@ -1,15 +1,11 @@
 <?
 require_once("config.php");
 
-function connect(){
-        $conn = mysql_connect($host_name,$user_name,$user_password);
-        mysql_select_db($db_name, $conn );
-}
-
 $key = "";
 if(isset($_REQUEST['t'])){
         $type = $_REQUEST['t'];
-        connect();
+	$conn = mysql_connect($host_name,$user_name,$user_password);
+	mysql_select_db($db_name, $conn );
         if($type=='u'){
                 $key = mysql_real_escape_string($_REQUEST['k']);
                 $link = mysql_real_escape_string($_REQUEST['l']);
@@ -34,9 +30,9 @@ if(isset($_REQUEST['t'])){
                 break;
         }
         if(strlen($key)!=0){
-                connect();
-                $row = mysql_fetch_array(mysql_query("SELECT * FROM map where `from`='$key';"));
-                echo $row['to'];
+		$conn = mysql_connect($host_name,$user_name,$user_password);
+		mysql_select_db($db_name, $conn );
+                $row = mysql_fetch_array(mysql_query("SELECT * FROM forwarding.map where `from`='$key';"));
                 header("Location: ".$row['to']);
         }
 }
